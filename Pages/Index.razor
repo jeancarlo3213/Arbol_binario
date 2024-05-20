@@ -1,0 +1,275 @@
+﻿@page "/"
+
+@using Arbol_binario.Pages
+
+<PageTitle>Index</PageTitle>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #444;
+    }
+
+    .input-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .input-container input, .input-container button {
+        margin: 0 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .input-container button {
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+    }
+
+    .input-container button:hover {
+        background-color: #218838;
+    }
+
+    .tree, .recorridos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .recorridos h2 {
+        margin-top: 40px;
+        color: #444;
+    }
+
+    .recorridos button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .recorridos button:hover {
+        background-color: #0056b3;
+    }
+
+    .recorridos #recorrido-lineal {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white;
+        min-width: 200px;
+        text-align: center;
+    }
+</style>
+
+<h1>Gestión de Árbol Binario</h1>
+
+<div class="input-container">
+    <input @bind="informacion" type="number" placeholder="Valor del nodo" />
+    <button @onclick="InsertarNodo">Insertar Nodo</button>
+    <button @onclick="EliminarNodo">Eliminar Nodo</button>
+</div>
+
+<div class="tree">
+    @if (arbol.Raiz != null)
+    {
+        <TreeNode Nodo="@arbol.Raiz" />
+    }
+</div>
+
+<div class="recorridos">
+    <h2>Recorridos Lineales</h2>
+    <div>
+        <button @onclick="MostrarPreOrdenRecursivo">PreOrden Recursivo</button>
+        <button @onclick="MostrarInOrdenRecursivo">InOrden Recursivo</button>
+        <button @onclick="MostrarPostOrdenRecursivo">PostOrden Recursivo</button>
+        <button @onclick="MostrarPreOrdenIterativo">PreOrden Iterativo</button>
+        <button @onclick="MostrarInOrdenIterativo">InOrden Iterativo</button>
+        <button @onclick="MostrarPostOrdenIterativo">PostOrden Iterativo</button>
+    </div>
+    <div id="recorrido-lineal">
+        @recorridoLineal
+    </div>
+
+    <h2>Recorridos Gráficos</h2>
+    <div>
+        <button @onclick="MostrarPreOrdenRecursivoGrafico">PreOrden Recursivo</button>
+        <button @onclick="MostrarInOrdenRecursivoGrafico">InOrden Recursivo</button>
+        <button @onclick="MostrarPostOrdenRecursivoGrafico">PostOrden Recursivo</button>
+        <button @onclick="MostrarPreOrdenIterativoGrafico">PreOrden Iterativo</button>
+        <button @onclick="MostrarInOrdenIterativoGrafico">InOrden Iterativo</button>
+        <button @onclick="MostrarPostOrdenIterativoGrafico">PostOrden Iterativo</button>
+    </div>
+    <div class="tree">
+        @if (recorridoGrafico != null)
+        {
+            <TreeNodeRecorrido Nodo="@recorridoGrafico" />
+        }
+    </div>
+</div>
+
+@code {
+    private ArbolBinario arbol = new ArbolBinario();
+    private int informacion;
+    private string recorridoLineal;
+    private NodoArbol? recorridoGrafico;
+
+    private void InsertarNodo()
+    {
+        arbol.Insertar(informacion);
+        informacion = 0;
+    }
+
+    private void EliminarNodo()
+    {
+        arbol.Eliminar(informacion);
+        informacion = 0;
+    }
+
+    private void MostrarPreOrdenRecursivo()
+    {
+        var resultado = arbol.RecorridoPreOrdenRecursivo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarInOrdenRecursivo()
+    {
+        var resultado = arbol.RecorridoInOrdenRecursivo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarPostOrdenRecursivo()
+    {
+        var resultado = arbol.RecorridoPostOrdenRecursivo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarPreOrdenIterativo()
+    {
+        var resultado = arbol.RecorridoPreOrdenIterativo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarInOrdenIterativo()
+    {
+        var resultado = arbol.RecorridoInOrdenIterativo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarPostOrdenIterativo()
+    {
+        var resultado = arbol.RecorridoPostOrdenIterativo();
+        recorridoLineal = RecorridoToString(resultado);
+    }
+
+    private void MostrarPreOrdenRecursivoGrafico()
+    {
+        var resultado = arbol.RecorridoPreOrdenRecursivo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private void MostrarInOrdenRecursivoGrafico()
+    {
+        var resultado = arbol.RecorridoInOrdenRecursivo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private void MostrarPostOrdenRecursivoGrafico()
+    {
+        var resultado = arbol.RecorridoPostOrdenRecursivo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private void MostrarPreOrdenIterativoGrafico()
+    {
+        var resultado = arbol.RecorridoPreOrdenIterativo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private void MostrarInOrdenIterativoGrafico()
+    {
+        var resultado = arbol.RecorridoInOrdenIterativo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private void MostrarPostOrdenIterativoGrafico()
+    {
+        var resultado = arbol.RecorridoPostOrdenIterativo();
+        recorridoGrafico = ConvertirAArbol(resultado);
+    }
+
+    private string RecorridoToString(NodoArbol? cabeza)
+    {
+        string resultado = string.Empty;
+        while (cabeza != null)
+        {
+            resultado += cabeza.Informacion.ToString() + " ";
+            cabeza = cabeza.Siguiente;
+        }
+        return resultado.Trim();
+    }
+
+    private NodoArbol? ConvertirAArbol(NodoArbol? cabeza)
+    {
+        if (cabeza == null) return null;
+
+        // Crear el primer nodo del nuevo árbol
+        NodoArbol nuevoArbol = new NodoArbol(cabeza.Informacion);
+        NodoArbol actual = nuevoArbol;
+        NodoArbol? actualLista = cabeza.Siguiente;
+
+        while (actualLista != null)
+        {
+            NodoArbol? padre = null;
+            NodoArbol? nodo = nuevoArbol;
+            bool insertado = false;
+
+            // Encontrar la posición correcta para insertar el nodo
+            while (nodo != null && !insertado)
+            {
+                padre = nodo;
+
+                if ((int)actualLista.Informacion < (int)nodo.Informacion)
+                {
+                    nodo = nodo.RamaIzquierda;
+                    if (nodo == null)
+                    {
+                        padre.RamaIzquierda = new NodoArbol(actualLista.Informacion);
+                        insertado = true;
+                    }
+                }
+                else
+                {
+                    nodo = nodo.RamaDerecha;
+                    if (nodo == null)
+                    {
+                        padre.RamaDerecha = new NodoArbol(actualLista.Informacion);
+                        insertado = true;
+                    }
+                }
+            }
+
+            actualLista = actualLista.Siguiente;
+        }
+
+        return nuevoArbol;
+    }
+}

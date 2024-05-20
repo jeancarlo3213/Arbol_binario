@@ -1,0 +1,33 @@
+﻿@using Arbol_binario.Pages
+
+<div class="tree-node-recorrido">
+    <div class="node-content-recorrido">@Nodo.Informacion</div>
+    @if (Nodo.RamaIzquierda != null || Nodo.RamaDerecha != null)
+    {
+        <div class="tree-children-recorrido">
+            @if (Nodo.RamaIzquierda != null)
+            {
+                <div class="tree-child-recorrido">
+                    <TreeNodeRecorrido Nodo="@Nodo.RamaIzquierda" />
+                    <svg class="connector-recorrido-izquierda" viewBox="0 0 100 100">
+                        <line x1="50" y1="0" x2="0" y2="100" stroke="black" />
+                    </svg>
+                </div>
+            }
+            @if (Nodo.RamaDerecha != null)
+            {
+                <div class="tree-child-recorrido">
+                    <TreeNodeRecorrido Nodo="@Nodo.RamaDerecha" />
+                    <svg class="connector-recorrido-derecha" viewBox="0 0 100 100">
+                        <line x1="50" y1="0" x2="100" y2="100" stroke="black" />
+                    </svg>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public NodoArbol Nodo { get; set; }
+}
