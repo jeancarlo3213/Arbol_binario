@@ -1,5 +1,6 @@
 ﻿namespace Arbol_binario.Pages
 {
+ 
     public class ArbolBinario
     {
         public NodoArbol? Raiz { get; private set; }
@@ -11,39 +12,51 @@
 
         public void Insertar(object informacion)
         {
-            if (Raiz == null)
-            {
-                Raiz = new NodoArbol(informacion);
-            }
-            else
-            {
-                InsertarRecursivo(Raiz, informacion);
-            }
+            Raiz = InsertarRecursivo(Raiz, informacion);
         }
 
-        private void InsertarRecursivo(NodoArbol nodo, object informacion)
+        private NodoArbol InsertarRecursivo(NodoArbol? nodo, object informacion)
         {
+            if (nodo == null)
+            {
+                return new NodoArbol(informacion);
+            }
+
             if ((int)informacion < (int)nodo.Informacion)
             {
-                if (nodo.RamaIzquierda == null)
-                {
-                    nodo.RamaIzquierda = new NodoArbol(informacion);
-                }
-                else
-                {
-                    InsertarRecursivo(nodo.RamaIzquierda, informacion);
-                }
+                nodo.RamaIzquierda = InsertarRecursivo(nodo.RamaIzquierda, informacion);
+            }
+            else if ((int)informacion > (int)nodo.Informacion)
+            {
+                nodo.RamaDerecha = InsertarRecursivo(nodo.RamaDerecha, informacion);
             }
             else
             {
-                if (nodo.RamaDerecha == null)
-                {
-                    nodo.RamaDerecha = new NodoArbol(informacion);
-                }
-                else
-                {
-                    InsertarRecursivo(nodo.RamaDerecha, informacion);
-                }
+                // Si el valor ya existe, no se inserta. Puedes ajustar esto según la política de duplicados que prefieras.
+                return nodo;
+            }
+
+            return nodo;
+        }
+
+        public bool Buscar(object informacion)
+        {
+            return BuscarRecursivo(Raiz, informacion);
+        }
+
+        private bool BuscarRecursivo(NodoArbol? nodo, object informacion)
+        {
+            if (nodo == null) return false;
+
+            if ((int)informacion == (int)nodo.Informacion) return true;
+
+            if ((int)informacion < (int)nodo.Informacion)
+            {
+                return BuscarRecursivo(nodo.RamaIzquierda, informacion);
+            }
+            else
+            {
+                return BuscarRecursivo(nodo.RamaDerecha, informacion);
             }
         }
 
@@ -93,6 +106,7 @@
             return minVal;
         }
 
+        // Métodos para los recorridos en preorden, inorden y postorden, tanto recursivo como iterativo
         public NodoArbol? RecorridoPreOrdenRecursivo()
         {
             var resultado = new NodoArbol();
@@ -212,49 +226,6 @@
 
             return resultado.Siguiente;
         }
-        private NodoArbol? ConvertirAArbol(NodoArbol? cabeza)
-        {
-            if (cabeza == null) return null;
-
-            NodoArbol nuevoArbol = new NodoArbol(cabeza.Informacion);
-            NodoArbol actual = nuevoArbol;
-            NodoArbol? actualLista = cabeza.Siguiente;
-
-            while (actualLista != null)
-            {
-                NodoArbol? padre = null;
-                NodoArbol? nodo = nuevoArbol;
-                bool insertado = false;
-
-                while (nodo != null && !insertado)
-                {
-                    padre = nodo;
-
-                    if ((int)actualLista.Informacion < (int)nodo.Informacion)
-                    {
-                        nodo = nodo.RamaIzquierda;
-                        if (nodo == null)
-                        {
-                            padre.RamaIzquierda = new NodoArbol(actualLista.Informacion);
-                            insertado = true;
-                        }
-                    }
-                    else
-                    {
-                        nodo = nodo.RamaDerecha;
-                        if (nodo == null)
-                        {
-                            padre.RamaDerecha = new NodoArbol(actualLista.Informacion);
-                            insertado = true;
-                        }
-                    }
-                }
-
-                actualLista = actualLista.Siguiente;
-            }
-
-            return nuevoArbol;
-        }
 
         public NodoArbol? RecorridoPostOrdenIterativo()
         {
@@ -294,6 +265,18 @@
 
             return resultado.Siguiente;
         }
+
+        // Método para verificar si el árbol es un ABB
+        public bool EsArbolBinarioDeBusqueda(NodoArbol? nodo, object? min, object? max)
+        {
+            if (nodo == null)
+                return true;
+
+            if ((min != null && (int)nodo.Informacion <= (int)min) || (max != null && (int)nodo.Informacion >= (int)max))
+                return false;
+
+            return EsArbolBinarioDeBusqueda(nodo.RamaIzquierda, min, nodo.Informacion) &&
+                   EsArbolBinarioDeBusqueda(nodo.RamaDerecha, nodo.Informacion, max);
+        }
     }
 }
-

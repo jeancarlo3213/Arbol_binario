@@ -86,8 +86,96 @@ a, .btn-link {
 
 
 
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333; /* Fondo negro */
+    color: #f4f4f9;
+    padding: 20px;
+}
 
+h1 {
+    text-align: center;
+    color: #f4f4f9; /* Texto blanco */
+}
 
+.input-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+    .input-container input, .input-container button {
+        margin: 0 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .input-container input {
+        background-color: #555;
+        color: #f4f4f9; /* Texto blanco */
+    }
+
+    .input-container button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+
+.tree, .recorridos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+    .recorridos h2 {
+        margin-top: 40px;
+        color: #f4f4f9; /* Texto blanco */
+    }
+
+    .recorridos button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #28a745; /* Verde */
+        color: white;
+        cursor: pointer;
+        outline: none;
+    }
+
+        .recorridos button:hover {
+            background-color: #218838;
+        }
+
+    .recorridos #recorrido-lineal {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #555; /* Fondo oscuro */
+        color: #f4f4f9; /* Texto blanco */
+        min-width: 200px;
+        text-align: center;
+    }
+
+.mensaje {
+    background-color: #444;
+    color: #f4f4f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
 
 /* Estilos para el árbol original */
 .tree {
@@ -112,6 +200,7 @@ a, .btn-link {
     border: 1px solid #000;
     border-radius: 5px;
     background: #fff;
+    color: #000; /* Texto negro */
 }
 
 .tree-children {
@@ -130,11 +219,16 @@ a, .btn-link {
     position: absolute;
     top: -20px;
     left: 50%;
-    width: 100px;
-    height: 20px;
+    width: 200px; /* Aumenta el ancho del conector */
+    height: 40px; /* Aumenta la altura del conector */
     transform: translateX(-50%);
     pointer-events: none;
 }
+
+    .connector line {
+        stroke: #fff; /* Color blanco para los conectores */
+        stroke-width: 4px; /* Aumenta el grosor del conector */
+    }
 
 .tree-children > .tree-child {
     flex: 1;
@@ -157,6 +251,7 @@ a, .btn-link {
     border: 1px solid #000;
     border-radius: 5px;
     background: #fff;
+    color: #000; /* Texto negro */
 }
 
 .tree-children-recorrido {
@@ -174,26 +269,18 @@ a, .btn-link {
 .connector-recorrido-izquierda,
 .connector-recorrido-derecha {
     position: absolute;
-    top: -10px;
+    top: -20px;
     left: 50%;
-    width: 100px;
-    height: 20px;
+    width: 200px; /* Aumenta el ancho del conector */
+    height: 40px; /* Aumenta la altura del conector */
     transform: translateX(-50%);
     pointer-events: none;
 }
 
-    .connector-recorrido-izquierda line {
-        x1: 50;
-        y1: 0;
-        x2: 0;
-        y2: 100;
-    }
-
+    .connector-recorrido-izquierda line,
     .connector-recorrido-derecha line {
-        x1: 50;
-        y1: 0;
-        x2: 100;
-        y2: 100;
+        stroke: #fff; /* Color blanco para los conectores */
+        stroke-width: 4px; /* Aumenta el grosor del conector */
     }
 
 .tree-children-recorrido > .tree-child-recorrido {
@@ -201,4 +288,3 @@ a, .btn-link {
     display: flex;
     justify-content: center;
 }
-

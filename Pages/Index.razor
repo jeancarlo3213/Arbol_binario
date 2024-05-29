@@ -4,81 +4,7 @@
 
 <PageTitle>Index</PageTitle>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        color: #333;
-        padding: 20px;
-    }
 
-    h1 {
-        text-align: center;
-        color: #444;
-    }
-
-    .input-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .input-container input, .input-container button {
-        margin: 0 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        outline: none;
-    }
-
-    .input-container button {
-        background-color: #28a745;
-        color: white;
-        cursor: pointer;
-    }
-
-    .input-container button:hover {
-        background-color: #218838;
-    }
-
-    .tree, .recorridos {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        margin-top: 20px;
-    }
-
-    .recorridos h2 {
-        margin-top: 40px;
-        color: #444;
-    }
-
-    .recorridos button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .recorridos button:hover {
-        background-color: #0056b3;
-    }
-
-    .recorridos #recorrido-lineal {
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: white;
-        min-width: 200px;
-        text-align: center;
-    }
-</style>
 
 <h1>Gestión de Árbol Binario</h1>
 
@@ -86,6 +12,8 @@
     <input @bind="informacion" type="number" placeholder="Valor del nodo" />
     <button @onclick="InsertarNodo">Insertar Nodo</button>
     <button @onclick="EliminarNodo">Eliminar Nodo</button>
+    <button @onclick="BuscarNodo">Buscar Nodo</button> <!-- Botón de búsqueda -->
+    <button @onclick="VerificarArbol">Verificar ABB</button>
 </div>
 
 <div class="tree">
@@ -94,6 +22,19 @@
         <TreeNode Nodo="@arbol.Raiz" />
     }
 </div>
+@if (!string.IsNullOrEmpty(busquedaMensaje))
+{
+    <div class="mensaje">
+        <p>@busquedaMensaje</p>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(verificacionMensaje))
+{
+    <div class="mensaje">
+        <p>@verificacionMensaje</p>
+    </div>
+}
 
 <div class="recorridos">
     <h2>Recorridos Lineales</h2>
@@ -130,6 +71,8 @@
     private ArbolBinario arbol = new ArbolBinario();
     private int informacion;
     private string recorridoLineal;
+    private string busquedaMensaje;
+    private string verificacionMensaje;
     private NodoArbol? recorridoGrafico;
 
     private void InsertarNodo()
@@ -142,6 +85,18 @@
     {
         arbol.Eliminar(informacion);
         informacion = 0;
+    }
+
+    private void BuscarNodo()
+    {
+        bool encontrado = arbol.Buscar(informacion);
+        busquedaMensaje = encontrado ? $"El nodo con valor {informacion} fue encontrado en el árbol." : $"El nodo con valor {informacion} no fue encontrado en el árbol.";
+    }
+
+    private void VerificarArbol()
+    {
+        bool esABB = arbol.EsArbolBinarioDeBusqueda(arbol.Raiz, null, null);
+        verificacionMensaje = esABB ? "El árbol es un Árbol Binario de Búsqueda" : "El árbol NO es un Árbol Binario de Búsqueda";
     }
 
     private void MostrarPreOrdenRecursivo()
